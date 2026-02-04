@@ -95,9 +95,54 @@ class Record:
 # =========================
 # ADDRESS BOOK CLASS
 # =========================
+class AddressBook(UserDict):
+    """
+    Dictionary-like container for all contacts.
+    """
+    def add_record(self, record):
+        self.data[record.name.value] = record
 
+    def find(self, name):
+        # Find contact by name.
+        return self.data.get(name)
+    
+    def delete (self, name):
+        if name in self.data:
+            del self.data[name]
+            return True
+        return False
+    
+    def get_upcoming_birthdays(self):
+        today = datetime.today().date()
+        next_week = today + timedelta(days = 7)
+        upcoming = []
 
+        for record in self.data.values():
+            if record.birthdays:
+                # Get this yeat's birthday date
+                bday_thi_year = record.birthday.value.replace(year = today.year)
 
+                # If birthday already passed, check next year
+                if bday_this_year < today:
+                    bday_thi_year = bday_thi_year.replace(year=today.year + 1)
+
+                # Check if whithin next 7 day
+                if today <= bday_thi_year <= next_week:
+                    if bday_thi_year.weekday() == 5: # Saturday
+                        congrats_date = bday_thi_year + timedelta(days=2)
+                    elif bday_thi_year.weekday() == 6: # Sunday
+                        congrats_date = bday_thi_year + timedelta(days=1)
+                    else:
+                        congrats_date = bday_thi_year
+
+                    upcoming.append({
+                        "name": record.name.value,
+                        "congratulation_date": congrats_date.strftime("%d.%m.%Y")
+                    })
+        return upcoming
+    
+    # =========================
+    
 
 
 
