@@ -52,7 +52,53 @@ class Birthday(Field):
 # =========================
 # RECORD CLASS
 # =========================
+class Record: 
+    def __init__(self, name):
+        self.name = Name(name)
+        self.phones = []
+        self.birthday = None
+
+    def add_phones(self, phone_number):
+        self.phones.append(Phone, phone_number):
+
+    def remove_phone(self, phone_number):
+        for phone in self.phones:
+            if phone.value == phone_number:
+                return True
+        return False
+    
+    def edit_phone(self, old_phone, new_phone):
+        for phone in self.phones:
+            if phone.value == old_phone:
+                if not (new_phone.isdigit() and len(new_phone) == 10):
+                    raise ValueError("New phone must be 10 digits")
+                phone.value = new_phone
+                return True
+            raise ValueError (f"Phone '{old_phone}' not found")
         
+    def find_phone(self, phone_number):
+        for phone in self.phones:
+            if phone.value == phone_number:
+                return phone
+            return None
+        
+    def add_birthday(self, birthday_str):
+        self.birthday = Birthday(birthday_str)
+
+    def __str__(self):
+        phones = '; '.join(p.value for p in self.phones)
+        result = f"👤 {self.name.value} | 📱 {phones}" if phones else f"👤 {self.name.value}"
+        if self.birthday:
+            result += f" | 🎂 {self.birthday}"
+        return result
+
+# =========================
+# ADDRESS BOOK CLASS
+# =========================
+
+
+
+
 
 
 
